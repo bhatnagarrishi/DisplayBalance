@@ -9,6 +9,6 @@ namespace AccountBalance.Models
     {
         public string AccountId { get; set; }
         public string OwnerId { get; set; }
-        public double Balance { get; set; }
+        public string Balance { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AccountBalance.Data;
 using AccountBalance.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -13,21 +14,23 @@ namespace AccountBalance.Controllers
     [ApiController]
     public class AccountController : ControllerBase
     {
+        TransferDbContext _tdbc;
+        public AccountController(TransferDbContext tdbc)
+        {
+            _tdbc = tdbc;
+        }
         // GET: api/Account/5
         [HttpGet("{id}", Name = "Get")]
         public IActionResult Get(string id)
         {
-            var acc = new Account { AccountId = "fy34q9ht3", Balance = 46489.478, OwnerId = "584237y09h" };
+            var acc = _tdbc.Accounts.FirstOrDefault(a => a.AccountId == id);
             return Ok(JsonConvert.SerializeObject(acc));
         }
         // GET: api/Account
         [HttpGet]
         public IActionResult Get()
         {
-            var accounts = new List<Account> { 
-                new Account { AccountId = "78tgw7f9e", Balance = 76489.478, OwnerId = "87g9wfe" }, 
-                new Account { AccountId = "fy34q9ht3", Balance = 46489.478, OwnerId = "584237y09h" } 
-            };
+            var accounts = _tdbc.Accounts;
             return Ok(JsonConvert.SerializeObject(accounts));
         }
     }
